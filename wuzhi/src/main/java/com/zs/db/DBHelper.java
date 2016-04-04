@@ -53,5 +53,18 @@ public class DBHelper {
 		public static final String ID = "_id";
 		public static final String USER_ID = "userId";
 	}
+	
+	
+	public static class ResultCollection {
+		public static final String COLLECTION_NAME = "Result";
+		public static final String ID = "_id";
+		public static final String MAX_STAR = "maxstar";
+		public static final String INVALID_COUNT= "invalidCount";
+		public static final String PRIVATE_USER_COUNT = "privateCount";
+		public static final String PUBLIC_USER_COUNT = "publicCount";
+		public static final String DATE = "time";
+	}
+	
+	
 
 }

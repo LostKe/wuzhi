@@ -3,6 +3,8 @@ package com.zs.wuzhi;
 import java.util.ArrayList;
 import java.util.List;
 
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
 import org.jsoup.nodes.Document;
 import org.jsoup.nodes.Element;
 import org.jsoup.select.Elements;
@@ -19,22 +21,27 @@ import com.zs.wuzhi.bean.Undefind;
  *
  */
 public class AnalysisDoc implements Runnable {
+	protected final Log logger = LogFactory.getLog(getClass());
 	public AnalysisDoc() {
 
 	}
 
 	public void run() {
-		while(SpiderManager.shouldContinue()){
-			long userId = SpiderManager.getUserId();
-			System.out.println("开始爬用户ID>>>" + userId+" 的数据");
+		SpiderManager.getInstance().init();//初始化数据
+		while(SpiderManager.getInstance().shouldContinue()){
+			long userId = SpiderManager.getInstance().getUserId();
+			logger.info("开始爬用户ID>>>" + userId+" 的数据");
 			Document doc=HttpClient.getWuzhiNowDoc(userId);
 			
 			//处理页面不存在情况
 			String title = doc.getElementsByTag("title").first().text();
 			if ("页面不存在".equals(title)) {
+				SpiderManager.getInstance().addLinkInvalid();
 				SpiderManager.getInstance().insertUndefind(new Undefind(userId));
 				continue;
 			} else {
+				SpiderManager.getInstance().clearLinkInvalid();
+				
 				Diary diary=new Diary();
 				diary.setUserId(userId);
 				diary.setUserName(title);

@@ -1,12 +1,29 @@
 package com.zs.dao;
 
-import com.zs.wuzhi.bean.Diary;
-import com.zs.wuzhi.bean.Undefind;
+import java.util.List;
 
-public interface Dao {
-	void insertDiary(Diary diary);
+import org.bson.Document;
+import org.bson.conversions.Bson;
+
+import com.mongodb.client.FindIterable;
+
+public interface Dao<T> {
 	
-	void insertUndefind(Undefind undefind);
+	public static int ORDERBY_ASC = 1;
+	public static int ORDERBY_DESC = -1;
 	
-	public long getDiaryCount();
+	public abstract void insertItem(T obj);
+	
+	
+	public abstract long getCount();
+	public List<T> getAllItem();
+	
+	public T findOne(Bson query);
+	
+	public List<T> findMany(Bson query);
+	
+	public List<T> parse(FindIterable<Document> docs);
+	
+	public abstract T parstItemFromCursor(Document doc);
+
 }

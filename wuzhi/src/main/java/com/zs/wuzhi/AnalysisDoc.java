@@ -22,8 +22,9 @@ import com.zs.wuzhi.bean.Undefind;
  */
 public class AnalysisDoc implements Runnable {
 	protected final Log logger = LogFactory.getLog(getClass());
-	public AnalysisDoc() {
-
+	private String root;
+	public AnalysisDoc(String root) {
+		this.root=root;
 	}
 
 	public void run() {
@@ -51,7 +52,10 @@ public class AnalysisDoc implements Runnable {
 				Element user_img_node = user_info_element.getElementsByTag("img").first();
 				if(user_img_node!=null){
 					String user_img_url = user_img_node.attr("src");
-					diary.setImg(user_img_url);
+					//TODO 获取图片的地址下载图片到本地 
+					String fileName=HttpClient.getImg(root,user_img_url);
+					//DB 中保持路径名称
+					diary.setImg(fileName);
 				}
 				
 				// 获取签名
@@ -88,9 +92,9 @@ public class AnalysisDoc implements Runnable {
 				Elements note_each = doc.getElementsByClass("note_each");
 				for (Element note : note_each) {
 					DiaryContent content=new DiaryContent();
-					String time = note.getElementsByClass("note_time").first().text();
+					String time = note.getElementsByClass("note_time").first().html();
 					content.setTime(time);
-					String content_text = note.getElementsByClass("note_content").first().text();
+					String content_text = note.getElementsByClass("note_content").first().html();
 					content.setText(content_text);
 					contents.add(content);
 				}
@@ -103,5 +107,6 @@ public class AnalysisDoc implements Runnable {
 		
 		
 	}
+	
 
 }

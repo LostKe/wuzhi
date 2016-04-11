@@ -32,10 +32,12 @@ public class StartUpListener implements ServletContextListener {
 	}
 
 	public void contextInitialized(ServletContextEvent event) {
+		final String root=event.getServletContext().getRealPath("/");
+		System.out.println(root);
 		logger.info("Listener启动");
 		//程序启动 爬取初始数据
 		if(BuildHelper.needInit()){
-			SpiderManager.getInstance().loadData();
+			SpiderManager.getInstance().loadData(root);
 		}
 		//设置定时器  24:00开始爬数据，更新db
 		Timer timer=new Timer();
@@ -44,7 +46,7 @@ public class StartUpListener implements ServletContextListener {
 			@Override
 			public void run() {
 				logger.info("定时爬取--> 启动 开始爬取数据");
-				SpiderManager.getInstance().loadData();
+				SpiderManager.getInstance().loadData(root);
 				SpiderManager.getInstance().analysisAllData();
 			}
 		};

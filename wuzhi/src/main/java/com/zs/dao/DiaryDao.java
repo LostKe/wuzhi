@@ -7,5 +7,7 @@ import com.zs.wuzhi.bean.Diary;
 public interface DiaryDao extends Dao<Diary>{
 	
 	public List<Diary> queryStarMax();
+	
+	public Long queryIdMax();
 
 }

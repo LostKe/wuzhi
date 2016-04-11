@@ -75,9 +75,9 @@ public class SpiderManager {
 	}
 	
 	
-	public void loadData(){
+	public void loadData(String root){
 		for (int i = 0; i < 10; i++) {
-			Thread t=new Thread(new AnalysisDoc());
+			Thread t=new Thread(new AnalysisDoc(root));
 			t.start();
 		}
 	}

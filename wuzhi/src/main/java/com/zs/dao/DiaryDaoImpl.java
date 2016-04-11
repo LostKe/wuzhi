@@ -68,5 +68,11 @@ public class DiaryDaoImpl extends ADao<Diary>  implements DiaryDao  {
 		return parse(docs);
 	}
 
+	public Long queryIdMax() {
+		Document documet=dbCollection.find().sort(Filters.eq(DBHelper.DiaryCollection.USER_ID, ORDERBY_DESC)).first();
+		Diary diary=parstItemFromCursor(documet);
+		return diary.getUserId();
+	}
+
 	
 }
